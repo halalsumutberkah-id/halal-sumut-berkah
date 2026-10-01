@@ -1,0 +1,472 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                  String         @id @default(cuid())
+  name                String
+  email               String         @unique
+  password            String
+  role                String         @default("umkm")
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  emailVerifiedAt     DateTime?
+  otpCode             String?
+  otpExpiresAt        DateTime?
+  resetToken          String?        @unique
+  resetTokenExpiresAt DateTime?
+  lp3hProfile         Lp3hProfile?
+  umkmProfile         UmkmProfile?
+  notifications       Notification[]
+  educationPosts      Education[]
+  newsPosts           News[]
+
+  @@map("users")
+}
+
+model Lp3hProfile {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  name        String
+  slug        String  @unique
+  address     String
+  phone       String
+  description String? @db.Text
+  logoUrl     String?
+
+  // profil lengkap - opsional, dilengkapi belakangan oleh LP3H sendiri
+  // atau Admin
+  jenisLembaga    String?
+  lembagaInduk    String?
+  officeKecamatan String?
+  officeKabupaten String?
+  officeAddress   String?
+  contactEmail    String?
+  bio             String? @db.Text
+
+  // Data Penanggung Jawab/Admin LP3H - diisi LP3H sendiri (sama form-nya
+  // dipakai juga oleh Admin lewat endpoint terpisah)
+  pjName         String?
+  pjNik          String?
+  pjEmail        String?
+  pjJabatan      String?
+  pjJenisKelamin String?
+  pjPhone        String?
+  pjKtpUrl       String?
+
+  // legalitas lembaga - HANYA Admin yang boleh isi/ubah field ini, LP3H
+  // cuma bisa lihat di profil mereka sendiri (enforced di level API, bukan
+  // cuma UI). registrationDocumentUrl dipakai ulang sebagai screenshot
+  // bukti registrasi SIHALAL (bukan lagi dokumen PDF terpisah)
+  registrationDocumentUrl String?
+
+  // DEPRECATED - tidak lagi diisi/dipakai form, dibiarkan di DB supaya
+  // data lama tidak hilang. Aman di-drop belakangan lewat migrasi terpisah.
+  registrationNumber String?
+  skNumber           String?
+  skDocumentUrl      String?
+
+  createdAt                    DateTime                      @default(now())
+  updatedAt                    DateTime                      @updatedAt
+  user                         User                          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pendampings                  Pendamping[]
+  submissions                  DaftarMandiriSubmission[]
+  publishedProducts            Product[]
+  sertifikasiGratisSubmissions SertifikasiGratisSubmission[]
+
+  @@map("lp3h_profiles")
+}
+
+model Lph {
+  id          String  @id @default(cuid())
+  name        String
+  description String? @db.Text
+  address     String
+  kabupaten   String
+  phone       String
+
+  // legalitas & operasional tambahan
+  registrationNumberBpjph String?
+  skValidUntil            DateTime?
+  inspectionScope         String?   @db.Text
+  contactWhatsapp         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("lph")
+}
+
+model Pendamping {
+  id       String  @id @default(cuid())
+  lp3hId   String
+  name     String
+  photoUrl String?
+  phone    String
+
+  // data legalitas P3H - opsional di database, dilengkapi belakangan
+  // oleh LP3H sendiri atau Admin
+  nikP3h             String?
+  jenisKelamin       String?
+  emailP3h           String?
+  kecamatan          String?
+  kabupaten          String?
+  alamatDetail       String?
+  ktpUrl             String?
+  registrasiBpjphUrl String?
+
+  // legalitas versi baru: bukti screenshot nomor registrasi SIHALAL
+  // (gambar) + file sertifikat pelatihan P3H
+  registrasiSihalalUrl   String?
+  sertifikatPelatihanUrl String?
+
+  // DEPRECATED - tidak lagi diisi/dipakai form, dibiarkan di DB supaya
+  // data lama tidak hilang. Aman di-drop belakangan lewat migrasi terpisah.
+  nomorRegistrasiP3h String?
+  nomorSk            String?
+  tanggalSk          DateTime?
+  skUrl              String?
+
+  // status verifikasi Admin - default "pending" begitu Pendamping baru
+  // ditambah/diedit, cuma Admin yang bisa ubah lewat endpoint verifikasi
+  // terpisah
+  verificationStatus String  @default("pending") // pending | terverifikasi | ditolak
+  adminNote          String? @db.Text
+
+  createdAt                    DateTime                      @default(now())
+  updatedAt                    DateTime                      @updatedAt
+  lp3h                         Lp3hProfile                   @relation(fields: [lp3hId], references: [id], onDelete: Cascade)
+  submissions                  DaftarMandiriSubmission[]
+  sertifikasiGratisSubmissions SertifikasiGratisSubmission[]
+
+  @@index([lp3hId])
+  @@map("pendampings")
+}
+
+model BusinessCategory {
+  id        String        @id @default(cuid())
+  name      String        @unique
+  slug      String        @unique
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  umkms     UmkmProfile[]
+
+  @@map("business_categories")
+}
+
+model UmkmProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  slug   String @unique
+
+  // data pelaku usaha
+  ownerName      String
+  ownerNik       String?
+  ownerGender    String?
+  birthDate      DateTime?
+  ownerPhone     String
+  ownerKecamatan String
+  ownerKabupaten String
+  ownerAddress   String
+  ktpUrl         String?
+
+  // data usaha
+  businessName          String
+  logoUrl               String?
+  nibNumber             String
+  nibUrl                String?
+  establishedYear       Int
+  businessKecamatan     String
+  businessKabupaten     String
+  businessAddress       String
+  businessType          String
+  businessCategoryId    String
+  annualRevenue         String
+  businessContactNumber String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user                         User                          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessCategory             BusinessCategory              @relation(fields: [businessCategoryId], references: [id])
+  products                     Product[]
+  sertifikasiGratisSubmissions SertifikasiGratisSubmission[]
+
+  @@index([businessCategoryId])
+  @@map("umkm_profiles")
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                String  @id @default(cuid())
+  umkmId            String
+  categoryId        String
+  name              String
+  price             Int
+  shortDescription  String? @db.Text
+  advantages        String? @db.Text
+  ingredients       String? @db.Text
+  productionProcess String? @db.Text
+  photoUrl          String?
+
+  halalStatus     String  @default("belum_halal")
+  halalCertNumber String?
+  halalCertUrl    String?
+
+  pirtNumber String?
+  pirtUrl    String?
+  bpomNumber String?
+  bpomUrl    String?
+  hakiNumber String?
+  hakiUrl    String?
+  slhsNumber String?
+  slhsUrl    String?
+
+  verificationStatus String  @default("pending")
+  adminNote          String? @db.Text
+
+  isPublished              Boolean @default(false)
+  publishedLp3hId          String?
+  agreedResponsibility     Boolean @default(false)
+  agreedPublicationConsent Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  umkm                      UmkmProfile                @relation(fields: [umkmId], references: [id], onDelete: Cascade)
+  category                  Category                   @relation(fields: [categoryId], references: [id])
+  publishedLp3h             Lp3hProfile?               @relation(fields: [publishedLp3hId], references: [id])
+  daftarMandiriSubmissions  DaftarMandiriSubmission[]
+  sertifikasiGratisProducts SertifikasiGratisProduct[]
+
+  @@index([umkmId])
+  @@index([categoryId])
+  @@index([verificationStatus])
+  @@index([isPublished])
+  @@map("products")
+}
+
+model DaftarMandiriSubmission {
+  id           String  @id @default(cuid())
+  productId    String
+  lp3hId       String
+  pendampingId String?
+
+  // 5 pertanyaan eligibilitas Daftar Mandiri
+  isLowRisk             Boolean
+  usesHalalIngredients  Boolean
+  simpleCleanProduction Boolean
+  simpleEquipment       Boolean
+  simplePreservation    Boolean
+
+  agreedToTerms Boolean @default(false)
+
+  // ditangani manual oleh Super Admin
+  status    String  @default("belum_diproses") // belum_diproses | sedang_diproses | selesai
+  adminNote String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  lp3h       Lp3hProfile @relation(fields: [lp3hId], references: [id])
+  pendamping Pendamping? @relation(fields: [pendampingId], references: [id])
+
+  @@index([productId])
+  @@index([lp3hId])
+  @@index([status])
+  @@map("daftar_mandiri_submissions")
+}
+
+// FITUR BARU - "Sertifikasi Gratis". Beda alur dari DaftarMandiriSubmission
+// di atas: UMKM ajuin TANPA pilih LP3H/Pendamping, Admin yang verifikasi
+// berkas + menugaskan LP3H+Pendamping dalam 1 aksi. 1 pengajuan bisa
+// cover BEBERAPA produk sekaligus (relasi many-to-many lewat
+// SertifikasiGratisProduct), semuanya berbagi 1 sertifikat halal yang
+// sama begitu selesai
+model SertifikasiGratisSubmission {
+  id     String @id @default(cuid())
+  umkmId String
+
+  status String @default("menunggu_verifikasi") // menunggu_verifikasi | ditugaskan | selesai | ditolak
+
+  // diisi Admin pas approve+tugaskan - 2-2nya keisi bareng dalam 1 aksi
+  lp3hId       String?
+  pendampingId String?
+
+  // Kode Fasilitasi - referensi kode yang harus diinput Pendamping saat
+  // memproses pengajuan ini di portal SIHALAL eksternal. Di-assign
+  // OTOMATIS saat submission dibuat (ambil kode aktif dengan kuota
+  // tersisa, urut dari yang paling lama dibuat), TIDAK divalidasi/dipakai
+  // sistem kita sendiri untuk apapun - murni pencatatan referensi.
+  // Nullable: kalau semua kode penuh/belum ada kode aktif, submission
+  // tetap boleh jalan tanpa kode, Admin bisa assign manual belakangan.
+  fasilitasiCodeId String?
+
+  adminNote String? @db.Text
+
+  // diisi Admin pas tandain "selesai" - berlaku buat SEMUA produk dalam
+  // pengajuan ini
+  halalCertNumber String?
+  halalCertUrl    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  umkm           UmkmProfile                @relation(fields: [umkmId], references: [id], onDelete: Cascade)
+  lp3h           Lp3hProfile?               @relation(fields: [lp3hId], references: [id])
+  pendamping     Pendamping?                @relation(fields: [pendampingId], references: [id])
+  fasilitasiCode FasilitasiCode?            @relation(fields: [fasilitasiCodeId], references: [id])
+  products       SertifikasiGratisProduct[]
+
+  @@index([umkmId])
+  @@index([lp3hId])
+  @@index([status])
+  @@index([fasilitasiCodeId])
+  @@map("sertifikasi_gratis_submissions")
+}
+
+// Kode Fasilitasi - kode referensi eksternal (dipakai manual oleh
+// Pendamping saat mengurus pengajuan di portal SIHALAL/BPJPH, BUKAN
+// divalidasi/digunakan oleh sistem kita sendiri). Admin input kode +
+// kuota secara bertahap (mis. Kode A kuota 100, begitu penuh baru Kode
+// B aktif dipakai berikutnya) - alokasi ke submission berjalan otomatis
+// berdasarkan urutan createdAt kode yang masih isActive & kuotanya
+// belum penuh.
+model FasilitasiCode {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  quota     Int
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  submissions SertifikasiGratisSubmission[]
+
+  @@map("fasilitasi_codes")
+}
+
+// tabel penghubung many-to-many antara pengajuan & produk - 1 pengajuan
+// bisa punya banyak produk, tapi 1 produk cuma boleh ada di 1 pengajuan
+// AKTIF di satu waktu (dicek di level API, bukan constraint database -
+// karena produk BOLEH punya riwayat lebih dari 1 pengajuan seiring waktu,
+// misal pengajuan pertama ditolak, diajukan ulang lewat pengajuan baru)
+model SertifikasiGratisProduct {
+  id           String @id @default(cuid())
+  submissionId String
+  productId    String
+
+  submission SertifikasiGratisSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  product    Product                     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+  @@index([productId])
+  @@map("sertifikasi_gratis_products")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  message   String   @db.Text
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@map("notifications")
+}
+
+model Education {
+  id          String    @id @default(cuid())
+  authorId    String
+  title       String
+  category    String
+  slug        String    @unique
+  thumbnail   String?
+  content     String    @db.Text
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  author      User      @relation(fields: [authorId], references: [id])
+
+  @@index([isPublished])
+  @@map("education")
+}
+
+model News {
+  id          String    @id @default(cuid())
+  authorId    String
+  title       String
+  slug        String    @unique
+  thumbnail   String?
+  content     String    @db.Text
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  author      User      @relation(fields: [authorId], references: [id])
+
+  @@index([isPublished])
+  @@map("news")
+}
+
+model RateLimit {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  count       Int      @default(1)
+  windowStart DateTime @default(now())
+
+  @@map("rate_limits")
+}
+
+model HalalStatistic {
+  id             String   @id @default(cuid())
+  period         String
+  kabupaten      String
+  certifiedCount Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([period, kabupaten])
+  @@map("halal_statistics")
+}
+
+model Banner {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  link      String?
+  sequence  Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("banners")
+}
+
+model BannerSettings {
+  id                String   @id @default(cuid())
+  hideDurationHours Int      @default(24)
+  updatedAt         DateTime @updatedAt
+
+  @@map("banner_settings")
+}

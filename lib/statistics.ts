@@ -1,0 +1,40 @@
+export const TOTAL_PROVINSI = 'Total Provinsi' as const;
+
+export const KABUPATEN_SUMUT = [
+  'Kota Medan',
+  'Kota Binjai',
+  'Kota Tebing Tinggi',
+  'Kota Pematangsiantar',
+  'Kota Tanjungbalai',
+  'Kota Sibolga',
+  'Kota Padangsidimpuan',
+  'Kota Gunungsitoli',
+  'Kabupaten Deli Serdang',
+  'Kabupaten Langkat',
+  'Kabupaten Karo',
+  'Kabupaten Simalungun',
+  'Kabupaten Asahan',
+  'Kabupaten Labuhanbatu',
+  'Kabupaten Labuhanbatu Utara',
+  'Kabupaten Labuhanbatu Selatan',
+  'Kabupaten Toba',
+  'Kabupaten Tapanuli Utara',
+  'Kabupaten Tapanuli Tengah',
+  'Kabupaten Tapanuli Selatan',
+  'Kabupaten Dairi',
+  'Kabupaten Pakpak Bharat',
+  'Kabupaten Humbang Hasundutan',
+  'Kabupaten Samosir',
+  'Kabupaten Mandailing Natal',
+  'Kabupaten Padang Lawas',
+  'Kabupaten Padang Lawas Utara',
+  'Kabupaten Nias',
+  'Kabupaten Nias Utara',
+  'Kabupaten Nias Selatan',
+  'Kabupaten Nias Barat',
+  'Kabupaten Batu Bara',
+  'Kabupaten Serdang Bedagai',
+] as const;
+
+// dipakai di dropdown form Admin - "Total Provinsi" selalu di paling atas
+export const KABUPATEN_OPTIONS = [TOTAL_PROVINSI, ...KABUPATEN_SUMUT];
