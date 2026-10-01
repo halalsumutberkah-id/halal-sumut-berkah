@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { Providers } from '@/components/providers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from 'sonner';
-import { Analytics } from '@vercel/analytics/next';
 import { generateMetadata } from '@/lib/seo';
 import { siteConfig } from '@/lib/site-config';
 import { JsonLd } from '@/components/json-ld';
@@ -57,7 +56,6 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
             <Toaster richColors position="top-center" />
           </TooltipProvider>
         </Providers>
-        <Analytics />
       </body>
     </html>
   );
