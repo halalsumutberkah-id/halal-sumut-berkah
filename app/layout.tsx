@@ -2,6 +2,7 @@
 
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Providers } from '@/components/providers';
@@ -56,6 +57,10 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
             <Toaster richColors position="top-center" />
           </TooltipProvider>
         </Providers>
+
+        {/* Umami Analytics - pakai next/script (bukan tag <script> mentah)
+            biar dimuat setelah halaman interaktif dan gak memblokir render */}
+        <Script src="https://cloud.umami.is/script.js" data-website-id="78f9a47b-9b0a-41d8-b503-904abbde42e0" strategy="afterInteractive" />
       </body>
     </html>
   );
