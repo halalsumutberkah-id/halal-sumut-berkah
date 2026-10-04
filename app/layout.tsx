@@ -60,7 +60,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
 
         {/* Umami Analytics - pakai next/script (bukan tag <script> mentah)
             biar dimuat setelah halaman interaktif dan gak memblokir render */}
-        <Script src="/stats/lib.js" data-website-id="78f9a47b-9b0a-41d8-b503-904abbde42e0" strategy="afterInteractive" />
+        <Script src="/stats/lib.js" data-website-id="78f9a47b-9b0a-41d8-b503-904abbde42e0" data-host-url="/stats" strategy="afterInteractive" />
       </body>
     </html>
   );

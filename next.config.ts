@@ -20,8 +20,10 @@ const nextConfig: NextConfig = {
   // terlihat first-party dan gak gampang diblokir ad blocker. Sengaja
   // pakai path "/stats/..." dan nama file "lib.js" (bukan "umami" /
   // "script.js" / "analytics") karena itu pola yang dicocokkan blocker.
-  // Tracker Umami otomatis ngirim data ke <folder script>/api/send, jadi
-  // /stats/api/send juga harus di-rewrite.
+  // Script Umami Cloud defaultnya ngirim data ke gateway.umami.is (bukan
+  // ke folder tempat script dimuat), jadi layout.tsx pakai
+  // data-host-url="/stats" buat nge-override, dan /stats/api/send
+  // diteruskan ke gateway Umami Cloud.
   async rewrites() {
     return [
       {
@@ -30,7 +32,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/stats/api/send',
-        destination: 'https://cloud.umami.is/api/send',
+        destination: 'https://gateway.umami.is/api/send',
       },
     ];
   },
