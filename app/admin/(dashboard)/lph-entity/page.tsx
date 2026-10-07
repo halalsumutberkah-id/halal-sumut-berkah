@@ -40,6 +40,7 @@ function buildExportRows(lphList: LphEntityListItem[]) {
     'Nama LPH': formatLphName(row.name),
     'Kabupaten/Kota': toTitleCase(row.kabupaten),
     Telepon: row.phone,
+    'Email Resmi': row.email || '-',
     'Kontak CS/WhatsApp': row.contactWhatsapp || '-',
     'No. Registrasi BPJPH': row.registrationNumberBpjph || '-',
     'Masa Berlaku SK': row.skValidUntil ? formatDate(row.skValidUntil) : '-',
@@ -100,6 +101,7 @@ export default function AdminLphEntityPage() {
       sortKey: (row) => row.kabupaten.toLowerCase(),
     },
     { id: 'phone', header: 'Telepon', accessor: (row) => row.phone, className: 'whitespace-nowrap' },
+    { id: 'email', header: 'Email', accessor: (row) => row.email || '-', className: 'min-w-[180px]', sortKey: (row) => (row.email ?? '').toLowerCase() },
   ];
 
   const actions: DataTableAction<LphEntityListItem>[] = [
@@ -121,7 +123,7 @@ export default function AdminLphEntityPage() {
 
   function searchFn(row: LphEntityListItem, query: string) {
     const q = query.toLowerCase();
-    return row.name.toLowerCase().includes(q) || row.kabupaten.toLowerCase().includes(q);
+    return row.name.toLowerCase().includes(q) || row.kabupaten.toLowerCase().includes(q) || (row.email ?? '').toLowerCase().includes(q);
   }
 
   function sortFn(rows: LphEntityListItem[], sort: SortOption) {
