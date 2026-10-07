@@ -173,6 +173,7 @@ exports.Prisma.LphScalarFieldEnum = {
   address: 'address',
   kabupaten: 'kabupaten',
   phone: 'phone',
+  email: 'email',
   registrationNumberBpjph: 'registrationNumberBpjph',
   skValidUntil: 'skValidUntil',
   inspectionScope: 'inspectionScope',

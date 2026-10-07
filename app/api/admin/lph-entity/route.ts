@@ -47,6 +47,7 @@ export async function POST(req: NextRequest) {
     const lph = await prisma.lph.create({
       data: {
         ...data,
+        email: data.email || null,
         registrationNumberBpjph: data.registrationNumberBpjph || null,
         skValidUntil: data.skValidUntil ? new Date(data.skValidUntil) : null,
         inspectionScope: data.inspectionScope || null,

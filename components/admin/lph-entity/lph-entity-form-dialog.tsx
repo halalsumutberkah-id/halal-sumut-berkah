@@ -23,6 +23,7 @@ export interface LphEntityRecord {
   address: string;
   kabupaten: string;
   phone: string;
+  email: string | null;
   registrationNumberBpjph: string | null;
   skValidUntil: string | null;
   inspectionScope: string | null;
@@ -42,6 +43,7 @@ const emptyValues = {
   address: '',
   kabupaten: '',
   phone: '',
+  email: '',
   registrationNumberBpjph: '',
   skValidUntil: '',
   inspectionScope: '',
@@ -130,6 +132,7 @@ export function LphEntityFormDialog({ open, onOpenChange, lph, onSuccess }: LphE
               address: lph.address,
               kabupaten: lph.kabupaten,
               phone: lph.phone,
+              email: lph.email ?? '',
               registrationNumberBpjph: lph.registrationNumberBpjph ?? '',
               skValidUntil: lph.skValidUntil ? lph.skValidUntil.slice(0, 10) : '',
               inspectionScope: lph.inspectionScope ?? '',
@@ -189,6 +192,16 @@ export function LphEntityFormDialog({ open, onOpenChange, lph, onSuccess }: LphE
               )}
             </form.Field>
           </div>
+
+          <form.Field name="email" validators={{ onChange: ({ value }) => validateField('email', value) }}>
+            {(field) => (
+              <div className="flex flex-col gap-1.5">
+                <Label>Email Resmi Aktif (opsional)</Label>
+                <Input type="email" placeholder="contoh@lph.co.id" disabled={isLoading} value={field.state.value} onBlur={field.handleBlur} onChange={(e) => field.handleChange(e.target.value.trim())} />
+                {field.state.meta.errors[0] && <span className="text-xs text-destructive">{field.state.meta.errors[0]}</span>}
+              </div>
+            )}
+          </form.Field>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <form.Field name="registrationNumberBpjph" validators={{ onChange: ({ value }) => validateField('registrationNumberBpjph', value) }}>

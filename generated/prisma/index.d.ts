@@ -5643,6 +5643,7 @@ export namespace Prisma {
     address: string | null
     kabupaten: string | null
     phone: string | null
+    email: string | null
     registrationNumberBpjph: string | null
     skValidUntil: Date | null
     inspectionScope: string | null
@@ -5658,6 +5659,7 @@ export namespace Prisma {
     address: string | null
     kabupaten: string | null
     phone: string | null
+    email: string | null
     registrationNumberBpjph: string | null
     skValidUntil: Date | null
     inspectionScope: string | null
@@ -5673,6 +5675,7 @@ export namespace Prisma {
     address: number
     kabupaten: number
     phone: number
+    email: number
     registrationNumberBpjph: number
     skValidUntil: number
     inspectionScope: number
@@ -5690,6 +5693,7 @@ export namespace Prisma {
     address?: true
     kabupaten?: true
     phone?: true
+    email?: true
     registrationNumberBpjph?: true
     skValidUntil?: true
     inspectionScope?: true
@@ -5705,6 +5709,7 @@ export namespace Prisma {
     address?: true
     kabupaten?: true
     phone?: true
+    email?: true
     registrationNumberBpjph?: true
     skValidUntil?: true
     inspectionScope?: true
@@ -5720,6 +5725,7 @@ export namespace Prisma {
     address?: true
     kabupaten?: true
     phone?: true
+    email?: true
     registrationNumberBpjph?: true
     skValidUntil?: true
     inspectionScope?: true
@@ -5808,6 +5814,7 @@ export namespace Prisma {
     address: string
     kabupaten: string
     phone: string
+    email: string | null
     registrationNumberBpjph: string | null
     skValidUntil: Date | null
     inspectionScope: string | null
@@ -5840,6 +5847,7 @@ export namespace Prisma {
     address?: boolean
     kabupaten?: boolean
     phone?: boolean
+    email?: boolean
     registrationNumberBpjph?: boolean
     skValidUntil?: boolean
     inspectionScope?: boolean
@@ -5855,6 +5863,7 @@ export namespace Prisma {
     address?: boolean
     kabupaten?: boolean
     phone?: boolean
+    email?: boolean
     registrationNumberBpjph?: boolean
     skValidUntil?: boolean
     inspectionScope?: boolean
@@ -5870,6 +5879,7 @@ export namespace Prisma {
     address?: boolean
     kabupaten?: boolean
     phone?: boolean
+    email?: boolean
     registrationNumberBpjph?: boolean
     skValidUntil?: boolean
     inspectionScope?: boolean
@@ -5885,6 +5895,7 @@ export namespace Prisma {
     address?: boolean
     kabupaten?: boolean
     phone?: boolean
+    email?: boolean
     registrationNumberBpjph?: boolean
     skValidUntil?: boolean
     inspectionScope?: boolean
@@ -5893,7 +5904,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type LphOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "address" | "kabupaten" | "phone" | "registrationNumberBpjph" | "skValidUntil" | "inspectionScope" | "contactWhatsapp" | "createdAt" | "updatedAt", ExtArgs["result"]["lph"]>
+  export type LphOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "address" | "kabupaten" | "phone" | "email" | "registrationNumberBpjph" | "skValidUntil" | "inspectionScope" | "contactWhatsapp" | "createdAt" | "updatedAt", ExtArgs["result"]["lph"]>
 
   export type $LphPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Lph"
@@ -5905,6 +5916,7 @@ export namespace Prisma {
       address: string
       kabupaten: string
       phone: string
+      email: string | null
       registrationNumberBpjph: string | null
       skValidUntil: Date | null
       inspectionScope: string | null
@@ -6340,6 +6352,7 @@ export namespace Prisma {
     readonly address: FieldRef<"Lph", 'String'>
     readonly kabupaten: FieldRef<"Lph", 'String'>
     readonly phone: FieldRef<"Lph", 'String'>
+    readonly email: FieldRef<"Lph", 'String'>
     readonly registrationNumberBpjph: FieldRef<"Lph", 'String'>
     readonly skValidUntil: FieldRef<"Lph", 'DateTime'>
     readonly inspectionScope: FieldRef<"Lph", 'String'>
@@ -25374,6 +25387,7 @@ export namespace Prisma {
     address: 'address',
     kabupaten: 'kabupaten',
     phone: 'phone',
+    email: 'email',
     registrationNumberBpjph: 'registrationNumberBpjph',
     skValidUntil: 'skValidUntil',
     inspectionScope: 'inspectionScope',
@@ -26041,6 +26055,7 @@ export namespace Prisma {
     address?: StringFilter<"Lph"> | string
     kabupaten?: StringFilter<"Lph"> | string
     phone?: StringFilter<"Lph"> | string
+    email?: StringNullableFilter<"Lph"> | string | null
     registrationNumberBpjph?: StringNullableFilter<"Lph"> | string | null
     skValidUntil?: DateTimeNullableFilter<"Lph"> | Date | string | null
     inspectionScope?: StringNullableFilter<"Lph"> | string | null
@@ -26056,6 +26071,7 @@ export namespace Prisma {
     address?: SortOrder
     kabupaten?: SortOrder
     phone?: SortOrder
+    email?: SortOrderInput | SortOrder
     registrationNumberBpjph?: SortOrderInput | SortOrder
     skValidUntil?: SortOrderInput | SortOrder
     inspectionScope?: SortOrderInput | SortOrder
@@ -26074,6 +26090,7 @@ export namespace Prisma {
     address?: StringFilter<"Lph"> | string
     kabupaten?: StringFilter<"Lph"> | string
     phone?: StringFilter<"Lph"> | string
+    email?: StringNullableFilter<"Lph"> | string | null
     registrationNumberBpjph?: StringNullableFilter<"Lph"> | string | null
     skValidUntil?: DateTimeNullableFilter<"Lph"> | Date | string | null
     inspectionScope?: StringNullableFilter<"Lph"> | string | null
@@ -26089,6 +26106,7 @@ export namespace Prisma {
     address?: SortOrder
     kabupaten?: SortOrder
     phone?: SortOrder
+    email?: SortOrderInput | SortOrder
     registrationNumberBpjph?: SortOrderInput | SortOrder
     skValidUntil?: SortOrderInput | SortOrder
     inspectionScope?: SortOrderInput | SortOrder
@@ -26110,6 +26128,7 @@ export namespace Prisma {
     address?: StringWithAggregatesFilter<"Lph"> | string
     kabupaten?: StringWithAggregatesFilter<"Lph"> | string
     phone?: StringWithAggregatesFilter<"Lph"> | string
+    email?: StringNullableWithAggregatesFilter<"Lph"> | string | null
     registrationNumberBpjph?: StringNullableWithAggregatesFilter<"Lph"> | string | null
     skValidUntil?: DateTimeNullableWithAggregatesFilter<"Lph"> | Date | string | null
     inspectionScope?: StringNullableWithAggregatesFilter<"Lph"> | string | null
@@ -27868,6 +27887,7 @@ export namespace Prisma {
     address: string
     kabupaten: string
     phone: string
+    email?: string | null
     registrationNumberBpjph?: string | null
     skValidUntil?: Date | string | null
     inspectionScope?: string | null
@@ -27883,6 +27903,7 @@ export namespace Prisma {
     address: string
     kabupaten: string
     phone: string
+    email?: string | null
     registrationNumberBpjph?: string | null
     skValidUntil?: Date | string | null
     inspectionScope?: string | null
@@ -27898,6 +27919,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     kabupaten?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     registrationNumberBpjph?: NullableStringFieldUpdateOperationsInput | string | null
     skValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inspectionScope?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27913,6 +27935,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     kabupaten?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     registrationNumberBpjph?: NullableStringFieldUpdateOperationsInput | string | null
     skValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inspectionScope?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27928,6 +27951,7 @@ export namespace Prisma {
     address: string
     kabupaten: string
     phone: string
+    email?: string | null
     registrationNumberBpjph?: string | null
     skValidUntil?: Date | string | null
     inspectionScope?: string | null
@@ -27943,6 +27967,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     kabupaten?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     registrationNumberBpjph?: NullableStringFieldUpdateOperationsInput | string | null
     skValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inspectionScope?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27958,6 +27983,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     kabupaten?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     registrationNumberBpjph?: NullableStringFieldUpdateOperationsInput | string | null
     skValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     inspectionScope?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29872,6 +29898,7 @@ export namespace Prisma {
     address?: SortOrder
     kabupaten?: SortOrder
     phone?: SortOrder
+    email?: SortOrder
     registrationNumberBpjph?: SortOrder
     skValidUntil?: SortOrder
     inspectionScope?: SortOrder
@@ -29887,6 +29914,7 @@ export namespace Prisma {
     address?: SortOrder
     kabupaten?: SortOrder
     phone?: SortOrder
+    email?: SortOrder
     registrationNumberBpjph?: SortOrder
     skValidUntil?: SortOrder
     inspectionScope?: SortOrder
@@ -29902,6 +29930,7 @@ export namespace Prisma {
     address?: SortOrder
     kabupaten?: SortOrder
     phone?: SortOrder
+    email?: SortOrder
     registrationNumberBpjph?: SortOrder
     skValidUntil?: SortOrder
     inspectionScope?: SortOrder

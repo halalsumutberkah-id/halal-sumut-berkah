@@ -34,6 +34,7 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
       where: { id },
       data: {
         ...data,
+        email: data.email || null,
         registrationNumberBpjph: data.registrationNumberBpjph || null,
         skValidUntil: data.skValidUntil ? new Date(data.skValidUntil) : null,
         inspectionScope: data.inspectionScope || null,

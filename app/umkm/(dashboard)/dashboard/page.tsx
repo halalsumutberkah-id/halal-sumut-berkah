@@ -18,6 +18,15 @@ interface Stats {
   sertifikasiGratisTotal?: number;
 }
 
+const WORKFLOW_STEPS = [
+  'Lengkapi profil usaha anda.',
+  'Tambahkan produk anda di menu Produk.',
+  'Belum punya sertifikat halal? Ajukan Self Declare.',
+  'Tunggu Admin memeriksa. Selama belum diperiksa, pengajuan masih bisa diubah atau dihapus.',
+  'Setelah ada Pendamping, hubungi lewat tombol WhatsApp dan ikuti arahannya.',
+  'Sertifikat terbit, produk anda tampil di katalog.',
+];
+
 async function fetchStats(): Promise<Stats> {
   const res = await fetch('/api/umkm/stats');
   if (!res.ok) throw new Error('Gagal memuat statistik');
@@ -41,6 +50,7 @@ export default function UmkmDashboardPage() {
           <Skeleton className="h-48 w-full" />
         </div>
         <Skeleton className="h-32 w-full" />
+        <Skeleton className="h-56 w-full" />
       </div>
     );
   }
@@ -138,6 +148,20 @@ export default function UmkmDashboardPage() {
             </div>
           </Link>
         </div>
+      </div>
+
+      {/* ALUR PENGGUNAAN */}
+      <div className="rounded-2xl border border-border bg-card p-6">
+        <h3 className="text-sm font-semibold text-foreground">Cara Menggunakan</h3>
+
+        <ol className="mt-4 flex flex-col gap-3">
+          {WORKFLOW_STEPS.map((step, index) => (
+            <li key={step} className="flex items-start gap-3">
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-medium text-primary">{index + 1}</span>
+              <p className="text-sm leading-relaxed text-muted-foreground">{step}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   );

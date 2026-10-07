@@ -90,6 +90,10 @@ model Lph {
   kabupaten   String
   phone       String
 
+  // email resmi aktif - nullable di database supaya data LPH lama tidak
+  // error, tapi wajib diisi lewat form (lihat lph-entity.schema.ts)
+  email       String?
+
   // legalitas & operasional tambahan
   registrationNumberBpjph String?
   skValidUntil            DateTime?
